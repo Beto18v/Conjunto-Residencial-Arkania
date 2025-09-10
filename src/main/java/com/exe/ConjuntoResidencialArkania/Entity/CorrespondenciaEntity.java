@@ -1,14 +1,20 @@
 package com.exe.ConjuntoResidencialArkania.Entity;
 
 import jakarta.persistence.*;
-import java.time.LocalDateTime;
 import lombok.Data;
-
+import java.time.LocalDateTime;
+/**
+ * Entidad que representa la correspondencia recibida en el conjunto residencial.
+ * Maneja la información de paquetes, cartas y documentos que llegan a portería
+ * y su estado de entrega a los residentes.
+ */
 @Entity
 @Table(name = "correspondencias")
 @Data
 
 public class CorrespondenciaEntity {
+    
+    // Identificador único de la correspondencia
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long idCorrespondencia;
@@ -17,7 +23,7 @@ public class CorrespondenciaEntity {
     @ManyToOne
     @JoinColumn(name = "recibido_por_id")
     private UserEntity recibidoPor;
-    
+
     // Relacion con Usuario (a quien va dirigida la correspondencia)
     @ManyToOne
     @JoinColumn(name = "idUser", nullable = false)
@@ -28,6 +34,7 @@ public class CorrespondenciaEntity {
     @JoinColumn(name = "idApartamento", nullable = true)
     private ApartamentoEntity apartamento;
     
+    // Detalles de la correspondencia
     @Column(nullable = false)
     private String tipo; // Paquete, carta, documento, etc.
 
