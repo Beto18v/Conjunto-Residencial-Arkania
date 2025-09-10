@@ -21,17 +21,17 @@ public class CorrespondenciaEntity {
     
     // Relacion con Usuario (quien recibe la correspondencia en porteria)
     @ManyToOne
-    @JoinColumn(name = "recibido_por_id")
+    @JoinColumn(name = "recibido_por", nullable = false)
     private UserEntity recibidoPor;
 
     // Relacion con Usuario (a quien va dirigida la correspondencia)
     @ManyToOne
-    @JoinColumn(name = "idUser", nullable = false)
+    @JoinColumn(name = "destinatario", nullable = false)
     private UserEntity destinatario;
 
     // Relacion con apartamento (apartamento del destinatario, opcional)
     @ManyToOne
-    @JoinColumn(name = "idApartamento", nullable = true)
+    @JoinColumn(name = "apartamento")
     private ApartamentoEntity apartamento;
     
     // Detalles de la correspondencia
@@ -41,7 +41,7 @@ public class CorrespondenciaEntity {
     @Column(nullable = false)
     private LocalDateTime fechaRecepcion;
 
-    @Column(nullable = true)
+    @Column(nullable = false)
     private LocalDateTime fechaEntrega;
 
     @Column(nullable = false)
