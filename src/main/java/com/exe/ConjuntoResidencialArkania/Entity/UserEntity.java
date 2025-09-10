@@ -1,4 +1,201 @@
 package com.exe.ConjuntoResidencialArkania.Entity;
 
+import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import java.util.HashSet;
+import java.util.Set;
+
+/**
+ * Entidad que representa un usuario del sistema de gestión residencial.
+ * Esta clase mapea la tabla 'usuarios' en la base de datos y contiene
+ * toda la información personal y de autenticación de un usuario.
+ * 
+ * Un usuario puede tener múltiples roles (relación many-to-many) y
+ * puede estar asociado a uno o más apartamentos como propietario o residente.
+ */
+@Entity
+@Table(name = "usuarios")
+@Data // Lombok: genera getters, setters, toString, equals y hashCode
+@NoArgsConstructor // Lombok: genera constructor sin parámetros
+@AllArgsConstructor // Lombok: genera constructor con todos los parámetros
 public class UserEntity {
+
+    /**
+     * Identificador único del usuario en la base de datos.
+     * Se genera automáticamente usando IDENTITY strategy.
+     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "usuario_id")
+    private Long usuarioId;
+    
+    /**
+     * Tipo de documento de identidad (CC, CE, TI, etc.).
+     * Campo requerido para identificar el tipo de documento del usuario.
+     */
+    @Column(name = "tipo_documento", nullable = false, length = 5)
+    @NotBlank(message = "El tipo de documento es obligatorio")
+    @Pattern(regexp = "^(CC|CE|TI|PP|NIT)$", message = "Tipo de documento debe ser: CC, CE, TI, PP o NIT")
+    private String tipoDocumento;
+
+    /**
+     * Número de documento de identidad del usuario.
+     * Debe ser único en el sistema y es requerido.
+     * Se usa como identificador principal del usuario.
+     */
+    @Column(name = "numero_documento", nullable = false, unique = true, length = 20)
+    @NotBlank(message = "El número de documento es obligatorio")
+    @Size(min = 6, max = 20, message = "El número de documento debe tener entre 6 y 20 caracteres")
+    private String numeroDocumento;
+
+
+    /**
+     * Nombres completos del usuario.
+     * Campo requerido para identificación personal.
+     */
+    @Column(name = "nombres", nullable = false, length = 50)
+    @NotBlank(message = "Los nombres son obligatorios")
+    @Size(min = 2, max = 50, message = "Los nombres deben tener entre 2 y 50 caracteres")
+    private String nombres;
+
+    /**
+     * Apellidos completos del usuario.
+     * Campo requerido para identificación personal.
+     */
+    @Column(name = "apellidos", nullable = false, length = 50)
+    @NotBlank(message = "Los apellidos son obligatorios")
+    @Size(min = 2, max = 50, message = "Los apellidos deben tener entre 2 y 50 caracteres")
+    private String apellidos;
+
+    /**
+     * Correo electrónico del usuario.
+     * Debe ser único en el sistema y se usa para autenticación y notificaciones.
+     */
+    @Column(name = "email", nullable = false, unique = true, length = 150)
+    @NotBlank(message = "El email es obligatorio")
+    @Email(message = "El formato del email no es válido")
+    @Size(max = 150, message = "El email no puede exceder 150 caracteres")
+    private String email;
+
+    /**
+     * Número de teléfono del usuario.
+     * Campo opcional para contacto directo.
+     */
+    @Column(name = "telefono", length = 15)
+    @Pattern(regexp = "^[0-9+\\-\\s()]*$", message = "El teléfono solo puede contener números, +, -, espacios y paréntesis")
+    @Size(max = 15, message = "El teléfono no puede exceder 15 caracteres")
+    private String telefono;
+
+    /**
+     * Contraseña encriptada del usuario.
+     * Se almacena usando hash para seguridad.
+     */
+    @Column(name = "password", nullable = false)
+    @NotBlank(message = "La contraseña es obligatoria")
+    @Size(min = 8, message = "La contraseña debe tener al menos 8 caracteres")
+    private String password;
+
+    /**
+     * Indica si la cuenta del usuario está activa.
+     * Por defecto es true. Se puede desactivar para suspender el acceso.
+     */
+    @Column(name = "activo", nullable = false)
+    private Boolean activo = true;
+
+    /**
+     * Relación many-to-many con roles a través de la tabla intermedia usuario_rol.
+     * Un usuario puede tener múltiples roles (ej: PROPIETARIO, ARRENDATARIO, ADMINISTRADOR).
+     * 
+     * CascadeType.PERSIST: Al persistir un usuario, también persiste los roles nuevos.
+     * FetchType.LAZY: Los roles se cargan bajo demanda para optimizar rendimiento.
+     */
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.LAZY)
+    @JoinTable(
+        name = "usuario_rol", // Nombre de la tabla intermedia
+        joinColumns = @JoinColumn(name = "usuario_id"), // FK hacia usuarios
+        inverseJoinColumns = @JoinColumn(name = "rol_id") // FK hacia roles
+    )
+    private Set<RolEntity> roles = new HashSet<>();
+
+    /**
+     * Constructor personalizado para crear un usuario con datos básicos.
+     * Útil para registro de nuevos usuarios.
+     * 
+     * @param numeroDocumento Número de documento del usuario
+     * @param tipoDocumento Tipo de documento (CC, CE, etc.)
+     * @param nombres Nombres del usuario
+     * @param apellidos Apellidos del usuario
+     * @param email Email del usuario
+     * @param password Contraseña encriptada
+     */
+    public UserEntity(String numeroDocumento, String tipoDocumento, String nombres, 
+                     String apellidos, String email, String password) {
+        this.numeroDocumento = numeroDocumento;
+        this.tipoDocumento = tipoDocumento;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.email = email;
+        this.password = password;
+        this.activo = true;
+        this.roles = new HashSet<>();
+    }
+
+    /**
+     * Método de utilidad para agregar un rol al usuario.
+     * Maneja la relación bidireccional entre Usuario y Rol.
+     * 
+     * @param rol El rol a agregar al usuario
+     */
+    public void agregarRol(RolEntity rol) {
+        this.roles.add(rol);
+        rol.getUsuarios().add(this);
+    }
+
+    /**
+     * Método de utilidad para remover un rol del usuario.
+     * Maneja la relación bidireccional entre Usuario y Rol.
+     * 
+     * @param rol El rol a remover del usuario
+     */
+    public void removerRol(RolEntity rol) {
+        this.roles.remove(rol);
+        rol.getUsuarios().remove(this);
+    }
+
+    /**
+     * Método de utilidad para obtener el nombre completo del usuario.
+     * 
+     * @return String con nombres y apellidos concatenados
+     */
+    public String getNombreCompleto() {
+        return nombres + " " + apellidos;
+    }
+
+    /**
+     * Método de utilidad para verificar si el usuario tiene un rol específico.
+     * 
+     * @param nombreRol Nombre del rol a verificar
+     * @return true si el usuario tiene el rol, false en caso contrario
+     */
+    public boolean tieneRol(String nombreRol) {
+        return roles.stream()
+                .anyMatch(rol -> rol.getNombre().equals(nombreRol));
+    }
+
+    /**
+     * Método de utilidad para activar la cuenta del usuario.
+     */
+    public void activar() {
+        this.activo = true;
+    }
+
+    /**
+     * Método de utilidad para desactivar la cuenta del usuario.
+     */
+    public void desactivar() {
+        this.activo = false;
+    }
 }
