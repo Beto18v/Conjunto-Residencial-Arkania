@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -71,6 +72,18 @@ public class RolDTO {
     private Integer numeroUsuarios;
 
     /**
+     * Fecha y hora de creación del rol.
+     * Se establece automáticamente al crear el registro.
+     */
+    private LocalDateTime fechaCreacion;
+
+    /**
+     * Fecha y hora de última actualización del rol.
+     * Se actualiza automáticamente cada vez que se modifica el registro.
+     */
+    private LocalDateTime fechaActualizacion;
+
+    /**
      * Constructor para crear un DTO con datos básicos del rol.
      * Útil para respuestas que no requieren todos los campos.
      * 
@@ -96,6 +109,26 @@ public class RolDTO {
         this.nombre = nombre != null ? nombre.toUpperCase() : null;
         this.descripcion = descripcion;
         this.activo = true;
+    }
+
+    /**
+     * Constructor completo para crear un DTO con información de auditoría.
+     * 
+     * @param rolId ID del rol
+     * @param nombre Nombre del rol
+     * @param descripcion Descripción del rol
+     * @param activo Estado del rol
+     * @param fechaCreacion Fecha de creación
+     * @param fechaActualizacion Fecha de actualización
+     */
+    public RolDTO(Long rolId, String nombre, String descripcion, Boolean activo,
+                  LocalDateTime fechaCreacion, LocalDateTime fechaActualizacion) {
+        this.rolId = rolId;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.activo = activo;
+        this.fechaCreacion = fechaCreacion;
+        this.fechaActualizacion = fechaActualizacion;
     }
 
     /**

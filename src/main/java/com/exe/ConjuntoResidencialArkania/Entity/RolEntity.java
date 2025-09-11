@@ -5,7 +5,10 @@ import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -68,6 +71,22 @@ public class RolEntity {
      */
     @Column(name = "permisos", columnDefinition = "TEXT")
     private String permisos;
+
+    /**
+     * Fecha y hora de creación del rol.
+     * Se establece automáticamente al crear el registro.
+     */
+    @CreationTimestamp
+    @Column(name = "fecha_creacion", nullable = false, updatable = false)
+    private LocalDateTime fechaCreacion;
+
+    /**
+     * Fecha y hora de última actualización del rol.
+     * Se actualiza automáticamente cada vez que se modifica el registro.
+     */
+    @UpdateTimestamp
+    @Column(name = "fecha_actualizacion", nullable = false)
+    private LocalDateTime fechaActualizacion;
 
     /**
      * Relación many-to-many con usuarios a través de la tabla intermedia usuario_rol.

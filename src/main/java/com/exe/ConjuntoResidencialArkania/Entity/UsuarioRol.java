@@ -5,6 +5,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -66,6 +68,22 @@ public class UsuarioRol {
      */
     @Column(name = "activo", nullable = false)
     private Boolean activo = true;
+
+    /**
+     * Fecha y hora de creación de la asignación usuario-rol.
+     * Se establece automáticamente al crear el registro.
+     */
+    @CreationTimestamp
+    @Column(name = "fecha_creacion", nullable = false, updatable = false)
+    private LocalDateTime fechaCreacion;
+
+    /**
+     * Fecha y hora de última actualización de la asignación usuario-rol.
+     * Se actualiza automáticamente cada vez que se modifica el registro.
+     */
+    @UpdateTimestamp
+    @Column(name = "fecha_actualizacion", nullable = false)
+    private LocalDateTime fechaActualizacion;
 
     /**
      * Constructor personalizado para crear una asignación básica de rol.

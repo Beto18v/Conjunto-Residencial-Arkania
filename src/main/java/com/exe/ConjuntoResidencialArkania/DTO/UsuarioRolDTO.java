@@ -1,9 +1,10 @@
 package com.exe.ConjuntoResidencialArkania.DTO;
 
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+
+import java.time.LocalDateTime;
 
 /**
  * DTO (Data Transfer Object) para la transferencia de datos de la relación Usuario-Rol.
@@ -19,7 +20,6 @@ import lombok.NoArgsConstructor;
  */
 @Data // Lombok: genera getters, setters, toString, equals y hashCode automáticamente
 @NoArgsConstructor // Lombok: genera constructor sin parámetros para deserialización JSON
-@AllArgsConstructor // Lombok: genera constructor con todos los parámetros
 public class UsuarioRolDTO {
 
     /**
@@ -72,6 +72,18 @@ public class UsuarioRolDTO {
     private Boolean activo;
 
     /**
+     * Fecha y hora de creación de la asignación usuario-rol.
+     * Se establece automáticamente al crear el registro.
+     */
+    private LocalDateTime fechaCreacion;
+
+    /**
+     * Fecha y hora de última actualización de la asignación usuario-rol.
+     * Se actualiza automáticamente cada vez que se modifica el registro.
+     */
+    private LocalDateTime fechaActualizacion;
+
+    /**
      * Constructor para crear una asignación básica de rol.
      * Útil para operaciones simples de asignación.
      * 
@@ -102,6 +114,33 @@ public class UsuarioRolDTO {
         this.rolId = rolId;
         this.nombreRol = nombreRol;
         this.activo = activo;
+    }
+
+    /**
+     * Constructor completo para crear una asignación con información de auditoría.
+     * 
+     * @param usuarioRolId ID de la relación usuario-rol
+     * @param usuarioId ID del usuario
+     * @param numeroDocumentoUsuario Documento del usuario
+     * @param nombreCompletoUsuario Nombre completo del usuario
+     * @param rolId ID del rol
+     * @param nombreRol Nombre del rol
+     * @param activo Estado de la asignación
+     * @param fechaCreacion Fecha de creación
+     * @param fechaActualizacion Fecha de actualización
+     */
+    public UsuarioRolDTO(Long usuarioRolId, Long usuarioId, String numeroDocumentoUsuario, 
+                        String nombreCompletoUsuario, Long rolId, String nombreRol, 
+                        Boolean activo, LocalDateTime fechaCreacion, LocalDateTime fechaActualizacion) {
+        this.usuarioRolId = usuarioRolId;
+        this.usuarioId = usuarioId;
+        this.numeroDocumentoUsuario = numeroDocumentoUsuario;
+        this.nombreCompletoUsuario = nombreCompletoUsuario;
+        this.rolId = rolId;
+        this.nombreRol = nombreRol;
+        this.activo = activo;
+        this.fechaCreacion = fechaCreacion;
+        this.fechaActualizacion = fechaActualizacion;
     }
 
     /**

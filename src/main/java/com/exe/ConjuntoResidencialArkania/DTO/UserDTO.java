@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
@@ -106,6 +107,18 @@ public class UserDTO {
     private Set<String> roles;
 
     /**
+     * Fecha y hora de creación del usuario.
+     * Se establece automáticamente al crear el registro.
+     */
+    private LocalDateTime fechaCreacion;
+
+    /**
+     * Fecha y hora de última actualización del usuario.
+     * Se actualiza automáticamente cada vez que se modifica el registro.
+     */
+    private LocalDateTime fechaActualizacion;
+
+    /**
      * Constructor para crear un DTO con datos básicos del usuario.
      * Útil para respuestas que no requieren todos los campos.
      * 
@@ -124,6 +137,35 @@ public class UserDTO {
         this.apellidos = apellidos;
         this.email = email;
         this.activo = activo;
+    }
+
+    /**
+     * Constructor completo para crear un DTO con información de auditoría.
+     * 
+     * @param usuarioId ID del usuario
+     * @param tipoDocumento Tipo de documento
+     * @param numeroDocumento Número de documento
+     * @param nombres Nombres del usuario
+     * @param apellidos Apellidos del usuario
+     * @param email Email del usuario
+     * @param telefono Teléfono del usuario
+     * @param activo Estado de la cuenta
+     * @param fechaCreacion Fecha de creación
+     * @param fechaActualizacion Fecha de actualización
+     */
+    public UserDTO(Long usuarioId, String tipoDocumento, String numeroDocumento, String nombres, 
+                   String apellidos, String email, String telefono, Boolean activo,
+                   LocalDateTime fechaCreacion, LocalDateTime fechaActualizacion) {
+        this.usuarioId = usuarioId;
+        this.tipoDocumento = tipoDocumento;
+        this.numeroDocumento = numeroDocumento;
+        this.nombres = nombres;
+        this.apellidos = apellidos;
+        this.email = email;
+        this.telefono = telefono;
+        this.activo = activo;
+        this.fechaCreacion = fechaCreacion;
+        this.fechaActualizacion = fechaActualizacion;
     }
 
     /**
