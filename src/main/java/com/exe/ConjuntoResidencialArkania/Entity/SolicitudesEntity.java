@@ -1,9 +1,7 @@
 package com.exe.ConjuntoResidencialArkania.Entity;
 
-import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
-import jakarta.annotation.Generated;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Enumerated;
