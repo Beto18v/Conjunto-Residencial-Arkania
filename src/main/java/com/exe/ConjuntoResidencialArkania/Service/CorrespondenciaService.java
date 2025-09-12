@@ -1,75 +1,90 @@
 package com.exe.ConjuntoResidencialArkania.Service;
 
-
-import org.springframework.stereotype.Service;
-import org.springframework.beans.factory.annotation.Autowired;
-import java.time.LocalDateTime;
-
-import com.exe.ConjuntoResidencialArkania.Entity.CorrespondenciaEntity;
+import com.exe.ConjuntoResidencialArkania.DTO.CorrespondenciaDTO;
 import com.exe.ConjuntoResidencialArkania.Entity.CorrespondenciaEntity.Estado;
 import com.exe.ConjuntoResidencialArkania.Entity.CorrespondenciaEntity.Tipo;
-import com.exe.ConjuntoResidencialArkania.Repository.CorrespondenciaRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
-@Service
-public class CorrespondenciaService {
-    private final CorrespondenciaRepository correspondenciaRepository;
+/**
+ * Interfaz que define los servicios relacionados con la gestión de correspondencia
+ * en el conjunto residencial. Proporciona métodos para crear, leer, actualizar y eliminar
+ * correspondencias, así como consultas específicas por destinatario, estado, tipo, etc.
+ * Esta interfaz sigue el patrón de diseño de separación de responsabilidades,
+ * permitiendo que las implementaciones concretas manejen la lógica de negocio.
+ * Ahora trabaja directamente con DTOs para evitar conversiones en el controlador.
+ */
+public interface CorrespondenciaService {
 
-    @Autowired
-    public CorrespondenciaService(CorrespondenciaRepository correspondenciaRepository) {
-        this.correspondenciaRepository = correspondenciaRepository;
-    }
+    /**
+     * Crea una nueva correspondencia en el sistema.
+     * @param correspondencia El DTO de correspondencia a crear.
+     * @return El DTO de la correspondencia creada con su ID asignado.
+     */
+    CorrespondenciaDTO crearCorrespondencia(CorrespondenciaDTO correspondencia);
 
-    // Create
-    public CorrespondenciaEntity crearCorrespondencia(CorrespondenciaEntity correspondencia) {
-        return correspondenciaRepository.save(correspondencia);
-    }
+    /**
+     * Lista todas las correspondencias registradas en el sistema.
+     * @return Una lista de todos los DTOs de correspondencias.
+     */
+    List<CorrespondenciaDTO> listarTodas();
 
-    // Read All
-    public List<CorrespondenciaEntity> listarTodas() {
-        return correspondenciaRepository.findAll();
-    }
+    /**
+     * Busca una correspondencia por su ID único.
+     * @param id El ID de la correspondencia a buscar.
+     * @return Un Optional que contiene el DTO de la correspondencia si se encuentra, vacío en caso contrario.
+     */
+    Optional<CorrespondenciaDTO> buscarPorId(Long id);
 
-    // Read One
-    public Optional<CorrespondenciaEntity> buscarPorId(Long id) {
-        return correspondenciaRepository.findById(id);
-    }
+    /**
+     * Actualiza una correspondencia existente en el sistema.
+     * @param correspondencia El DTO de correspondencia con los datos actualizados.
+     * @return El DTO de la correspondencia actualizada.
+     */
+    CorrespondenciaDTO actualizarCorrespondencia(CorrespondenciaDTO correspondencia);
 
-    // Update
-    public CorrespondenciaEntity actualizarCorrespondencia(CorrespondenciaEntity correspondencia) {
-        return correspondenciaRepository.save(correspondencia);
-    }
+    /**
+     * Elimina una correspondencia del sistema por su ID.
+     * @param id El ID de la correspondencia a eliminar.
+     */
+    void eliminarCorrespondencia(Long id);
 
-    // Delete
-    public void eliminarCorrespondencia(Long id) {
-        correspondenciaRepository.deleteById(id);
-    }
+    /**
+     * Busca todas las correspondencias dirigidas a un destinatario específico.
+     * @param destinatario El ID del usuario destinatario.
+     * @return Una lista de DTOs de correspondencias para el destinatario.
+     */
+    List<CorrespondenciaDTO> buscarPorDestinatario(Long destinatario);
 
-    // Buscar por destinatario
-    public List<CorrespondenciaEntity> buscarPorDestinatario(Long destinatario) {
-        return correspondenciaRepository.findByDestinatario_usuarioId(destinatario);
-    }
+    /**
+     * Busca correspondencias por su estado (Pendiente, Entregada, etc.).
+     * @param estado El estado de la correspondencia.
+     * @return Una lista de DTOs de correspondencias con el estado especificado.
+     */
+    List<CorrespondenciaDTO> buscarPorEstado(Estado estado);
 
-    // Buscar por estado
-    public List<CorrespondenciaEntity> buscarPorEstado(Estado estado) {
-        return correspondenciaRepository.findByEstado(estado);
-    }
+    /**
+     * Busca correspondencias por su tipo (Paquete, Documento, Otro).
+     * @param tipo El tipo de correspondencia.
+     * @return Una lista de DTOs de correspondencias del tipo especificado.
+     */
+    List<CorrespondenciaDTO> buscarPorTipo(Tipo tipo);
 
-    // Buscar por tipo
-    public List<CorrespondenciaEntity> buscarPorTipo(Tipo tipo) {
-        return correspondenciaRepository.findByTipo(tipo);
-    }
+    /**
+     * Busca correspondencias registradas dentro de un rango de fechas.
+     * @param inicio La fecha de inicio del rango.
+     * @param fin La fecha de fin del rango.
+     * @return Una lista de DTOs de correspondencias en el rango de fechas.
+     */
+    List<CorrespondenciaDTO> buscarPorRangoFechas(LocalDateTime inicio, LocalDateTime fin);
 
-    // Buscar por rango de fechas
-    public List<CorrespondenciaEntity> buscarPorRangoFechas(LocalDateTime inicio, LocalDateTime fin) {
-        return correspondenciaRepository.findByFechaRecepcionBetween(inicio, fin);
-    }
-
-    // Buscar por quien retiró
-    public List<CorrespondenciaEntity> buscarPorRetiradoPor(Long idUsuario) {
-        return correspondenciaRepository.findByRetiradoPor_usuarioId(idUsuario);
-    }
+    /**
+     * Busca correspondencias retiradas por un usuario específico.
+     * @param idUsuario El ID del usuario que retiró la correspondencia.
+     * @return Una lista de DTOs de correspondencias retiradas por el usuario.
+     */
+    List<CorrespondenciaDTO> buscarPorRetiradoPor(Long idUsuario);
 
 }
