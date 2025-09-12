@@ -1,4 +1,4 @@
-package com.exe.ConjuntoResidencialArkania.Service.impl;
+package com.exe.ConjuntoResidencialArkania.Impl;
 
 import com.exe.ConjuntoResidencialArkania.DTO.ParqueaderoDTO;
 import com.exe.ConjuntoResidencialArkania.Entity.ParqueaderoEntity;
