@@ -41,7 +41,7 @@ public class AreasComunesEntity {
 
     @Max(value = 1000, message = "La capacidad máxima es 1000")
     @Min(value = 1, message = "La capacidad mínima es 1")
-    @Column(name = "capacidad_maxima", nullable = false, length = 1000)
+    @Column(name = "capacidad_maxima", nullable = false)
     Integer capacidadMaxima;
 
     @NotBlank(message = "El horario de funcionamiento es obligatorio")
