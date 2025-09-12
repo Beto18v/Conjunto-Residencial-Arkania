@@ -10,6 +10,7 @@ import com.exe.ConjuntoResidencialArkania.Entity.CorrespondenciaEntity.Estado;
 import com.exe.ConjuntoResidencialArkania.Entity.CorrespondenciaEntity.Tipo;
 import com.exe.ConjuntoResidencialArkania.Repository.CorrespondenciaRepository;
 import com.exe.ConjuntoResidencialArkania.Service.CorrespondenciaService;
+import com.exe.ConjuntoResidencialArkania.Exception.CorrespondenciaNotFoundException;
 
 import java.util.List;
 import java.util.Optional;
@@ -96,7 +97,7 @@ public class CorrespondenciaServiceImpl implements CorrespondenciaService {
     public CorrespondenciaDTO actualizarCorrespondencia(CorrespondenciaDTO dto) {
         // Validación opcional: verificar si existe antes de actualizar
         if (!correspondenciaRepository.existsById(dto.getIdCorrespondencia())) {
-            throw new IllegalArgumentException("La correspondencia con ID " + dto.getIdCorrespondencia() + " no existe.");
+            throw CorrespondenciaNotFoundException.porId(dto.getIdCorrespondencia());
         }
         // Convertir DTO a Entity
         CorrespondenciaEntity entity = convertirDtoAEntity(dto);
@@ -115,7 +116,7 @@ public class CorrespondenciaServiceImpl implements CorrespondenciaService {
     public void eliminarCorrespondencia(Long id) {
         // Verificación opcional: comprobar existencia antes de eliminar
         if (!correspondenciaRepository.existsById(id)) {
-            throw new IllegalArgumentException("La correspondencia con ID " + id + " no existe.");
+            throw CorrespondenciaNotFoundException.porId(id);
         }
         correspondenciaRepository.deleteById(id);
     }

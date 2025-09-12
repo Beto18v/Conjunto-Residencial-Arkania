@@ -15,6 +15,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import com.exe.ConjuntoResidencialArkania.Exception.CorrespondenciaNotFoundException;
+
 /**
  * Controlador REST para la gestión de correspondencias en el sistema de conjunto residencial.
  * 
@@ -93,7 +95,7 @@ public class CorrespondenciaController {
             dto.setIdCorrespondencia(id);
             CorrespondenciaDTO responseDto = correspondenciaService.actualizarCorrespondencia(dto);
             return ResponseEntity.ok(responseDto);
-        } catch (RuntimeException e) {
+        } catch (CorrespondenciaNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
@@ -108,7 +110,7 @@ public class CorrespondenciaController {
         try {
             correspondenciaService.eliminarCorrespondencia(id);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-        } catch (RuntimeException e) {
+        } catch (CorrespondenciaNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
