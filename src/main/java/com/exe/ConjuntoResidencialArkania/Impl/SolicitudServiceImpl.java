@@ -10,12 +10,12 @@ import com.exe.ConjuntoResidencialArkania.Entity.SolicitudesEntity;
 import com.exe.ConjuntoResidencialArkania.Repository.AreasComunesRepository;
 import com.exe.ConjuntoResidencialArkania.Repository.SolicitudRepository;
 @Service
-public class SolicitudServiceImpl extends SolicitudesService{
+public class SolicitudServiceImpl implements SolicitudesService{
     public final SolicitudRepository solicitudRepository;
     public final ModelMapper modelMapper;
 
     @Autowired
-    public solicitudesServiceImpl(SolicitudRepository solicitudRepository, ModelMapper modelMapper){
+    public SolicitudesServiceImpl(SolicitudRepository solicitudRepository, ModelMapper modelMapper){
         this.solicitudRepository = solicitudRepository;
         this.modelMapper = modelMapper;
     }

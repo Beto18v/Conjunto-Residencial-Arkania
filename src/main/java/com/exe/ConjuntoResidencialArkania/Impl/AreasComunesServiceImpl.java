@@ -8,7 +8,7 @@ import com.exe.ConjuntoResidencialArkania.DTO.SolicitudesDTO;
 import com.exe.ConjuntoResidencialArkania.Entity.AreasComunesEntity;
 import com.exe.ConjuntoResidencialArkania.Repository.AreasComunesRepository;
 @Service
-public class AreasComunesServiceImpl extends AreasComunesService{
+public class AreasComunesServiceImpl implements AreasComunesService{
     private final AreasComunesRepository areaRepository;
     private final ModelMapper modelMapper;
 
