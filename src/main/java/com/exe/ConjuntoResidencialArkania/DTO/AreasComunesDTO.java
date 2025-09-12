@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-@Data
+static static @Data
 @AllArgsConstructor
 @NoArgsConstructor  
 
