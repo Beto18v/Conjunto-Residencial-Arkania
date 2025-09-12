@@ -82,4 +82,17 @@ public class RolDTO {
      * Se actualiza automáticamente cada vez que se modifica el registro.
      */
     private LocalDateTime fechaActualizacion;
+
+    /**
+     * Constructor personalizado para crear RolDTO con nombre y descripción.
+     * Útil para inicializar roles básicos.
+     * 
+     * @param nombre Nombre del rol
+     * @param descripcion Descripción del rol
+     */
+    public RolDTO(String nombre, String descripcion) {
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.activo = true; // Por defecto activo
+    }
 }

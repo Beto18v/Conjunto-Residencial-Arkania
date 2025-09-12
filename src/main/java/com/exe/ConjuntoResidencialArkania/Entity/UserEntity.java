@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 /**
  * Entidad que representa un usuario del sistema de gestión residencial.
@@ -122,4 +123,14 @@ public class UserEntity {
     @UpdateTimestamp
     @Column(name = "fecha_actualizacion", nullable = false)
     private LocalDateTime fechaActualizacion;
+
+    /**
+     * Roles asociados al usuario.
+     * Relación many-to-many con la entidad Rol.
+     */
+    @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinTable(name = "usuario_rol",
+        joinColumns = @JoinColumn(name = "usuario_id"),
+        inverseJoinColumns = @JoinColumn(name = "rol_id"))
+    private Set<RolEntity> roles;
 }

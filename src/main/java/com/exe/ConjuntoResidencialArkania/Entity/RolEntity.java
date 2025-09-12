@@ -9,6 +9,7 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
+import java.util.Set;
 
 /**
  * Entidad que representa los roles del sistema de gestión residencial.
@@ -85,4 +86,11 @@ public class RolEntity {
     @UpdateTimestamp
     @Column(name = "fecha_actualizacion", nullable = false)
     private LocalDateTime fechaActualizacion;
+
+    /**
+     * Usuarios asociados al rol.
+     * Relación many-to-many inversa con la entidad User.
+     */
+    @ManyToMany(mappedBy = "roles", fetch = FetchType.LAZY)
+    private Set<UserEntity> usuarios;
 }

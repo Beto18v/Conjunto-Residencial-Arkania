@@ -470,7 +470,7 @@ public class RolServiceImpl implements RolService {
         return roles.stream()
                 .collect(Collectors.toMap(
                     RolEntity::getNombre,
-                    rol -> rol.getUsuarios().size()
+                    rol -> (Integer) rol.getUsuarios().size()
                 ));
     }
 
