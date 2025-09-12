@@ -48,8 +48,8 @@ public class CorrespondenciaService {
     }
 
     // Buscar por destinatario
-    public List<CorrespondenciaEntity> buscarPorDestinatario(Long destinatarioId) {
-        return correspondenciaRepository.findByDestinatario_UsuarioId(destinatarioId);
+    public List<CorrespondenciaEntity> buscarPorDestinatario(Long destinatario) {
+        return correspondenciaRepository.findByDestinatario_IdUsuario(destinatario);
     }
 
     // Buscar por estado
@@ -68,8 +68,8 @@ public class CorrespondenciaService {
     }
 
     // Buscar por quien retiró
-    public List<CorrespondenciaEntity> buscarPorRetiradoPor(Long usuarioId) {
-        return correspondenciaRepository.findByRetiradoPor_UsuarioId(usuarioId);
+    public List<CorrespondenciaEntity> buscarPorRetiradoPor(Long idUsuario) {
+        return correspondenciaRepository.findByRetiradoPor_IdUsuario(idUsuario);
     }
 
 }

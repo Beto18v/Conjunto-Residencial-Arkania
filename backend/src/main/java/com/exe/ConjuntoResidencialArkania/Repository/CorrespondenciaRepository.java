@@ -11,7 +11,7 @@ import java.util.List;
 public interface CorrespondenciaRepository extends JpaRepository<CorrespondenciaEntity, Long> {
     
     // Buscar todas las correspondencias por destinatario
-    List<CorrespondenciaEntity> findByDestinatario_UsuarioId(Long destinatarioId);
+    List<CorrespondenciaEntity> findByDestinatario_IdUsuario(Long destinatario);
 
     // Buscar correspondencias por estado (Pendiente, Entregada, etc.)
     List<CorrespondenciaEntity> findByEstado(Estado estado);
@@ -20,9 +20,9 @@ public interface CorrespondenciaRepository extends JpaRepository<Correspondencia
     List<CorrespondenciaEntity> findByTipo(Tipo tipo);
 
     // Buscar correspondencias registradas en un rango de fechas
-    List<CorrespondenciaEntity> findByFechaRecepcionBetween(LocalDateTime inicio, LocalDateTime fin);
+    List<CorrespondenciaEntity> findByFechaRecepcionBetween(LocalDateTime fechaRecepcion, LocalDateTime fechaEntrega);
 
     // Buscar correspondencias entregadas por un usuario específico (retiradas por)
-    List<CorrespondenciaEntity> findByRetiradoPor_UsuarioId(Long usuarioId);
+    List<CorrespondenciaEntity> findByRetiradoPor_IdUsuario(Long retiradoPor);
 
 }
